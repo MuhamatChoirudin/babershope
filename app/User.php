@@ -1,0 +1,38 @@
+<?php
+
+namespace App;
+
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Database\Eloquent\Model;
+use Laravel\Lumen\Auth\Authorizable;
+
+class User extends Model implements AuthenticatableContract, AuthorizableContract
+{
+    use Authenticatable, Authorizable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $table="user";
+    protected $primaryKey="id";
+    protected $fillable = [
+        'name', 'username', 'email', 'password','fk_role_code','status', 'api_token','created_at','updated_at',
+    ];
+
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password', 'api_token',
+    ];
+    public function roleUser()
+    {
+        return $this->blongsTo(RoleUser::class);
+    }
+}

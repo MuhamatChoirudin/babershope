@@ -20,7 +20,7 @@ class TransaksiDetail extends Model implements AuthenticatableContract, Authoriz
      *
      * @var array
      */
-    protected $table="item_transaksi";
+    protected $table="transaksi_detail";
     protected $primaryKey="id";
     protected $fillable = [
         'item_id', 'transaction_id', 'qty','created_at','updated_at',

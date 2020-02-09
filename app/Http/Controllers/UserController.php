@@ -25,6 +25,13 @@ class UserController extends Controller
     public function showOneAuthor($id)
     {
         try{
+            if (isset($user) and is_null($user)){
+                return response()->json([
+                    'success'=> 200,
+                    'message'=> 'User Found!',
+                    'List User'=>User::all()
+                ]);
+            }else{
             $user = User::find($id);
             if(isset($user) and is_null($user)){
                 return response()->json([
@@ -43,26 +50,31 @@ class UserController extends Controller
                     'message'=> 'User Not Found!'
                 ], 404);
             }
-            
+        }
         }catch (\Exception $e) {
             return response()->json([
                 'errorCode'=> 400,
                 'message'=> $e
             ], 400);
         }
-       
+    
     }
 
 
     public function update($id, Request $request)
     {
-        $request->json()->all();
         try{
 
            Hash::make($request->input('password'));
 
             $user = User::findOrFail($id);
-            $user->update([$request->all()]);
+
+            if(count($request->all())){
+                $user->update([$request->all()]);
+            }else{
+                $user->update($request->json()->all());
+            }
+            
     
             return response()->json([
                 'success'=> 200,

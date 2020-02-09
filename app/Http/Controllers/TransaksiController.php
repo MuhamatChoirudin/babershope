@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Cart;
+use App\Member;
 use App\Transaksi;
 use App\TransaksiDetail;
 
@@ -11,12 +13,40 @@ class TransaksiController extends Controller
 
     public function showAllAuthors()
     {
-        return response()->json(Transaksi::all());
+        return response()->json([
+            'success'=> 200,
+            'message'=> 'User Found!',
+            'lisTransaksi'=>Transaksi::all()
+        ]);
     }
 
     public function showOneAuthor($id)
     {
-        return response()->json(Transaksi::find($id));
+        try{
+            $transaksi = Transaksi::find($id);
+            if(isset($transaksi) and is_null($transaksi)){
+                return response()->json([
+                'erorrCode'=> 204,
+                'message'=> 'Transaksi Not Found!'
+            ],204);
+            }elseif($user){
+                return response()->json([
+                    'success'=> 200,
+                    'transaksi'=> $transaksi
+                ], 200);
+            } else{
+                return response()->json([
+                    'erorrCode'=> 404,
+                    'message'=> 'Transaksi Not Found!'
+                ], 404);
+            }
+            
+        }catch (\Exception $e) {
+            return response()->json([
+                'errorCode'=> 400,
+                'message'=> $e
+            ], 400);
+        }
     }
 
     // public function create(Request $request)
@@ -84,7 +114,33 @@ class TransaksiController extends Controller
 
     public function delete($id)
     {
-        Transaksi::findOrFail($id)->delete();
-        return response('Deleted Successfully', 200);
+        try{
+            Transaksi::findOrFail($id)->delete();
+            return response()->json([
+                'success'=> 200,
+                'message'=> 'Deleted Successfully',
+            ], 200);
+        }catch (\Exception $e) {
+            return response()->json([
+                'errorCode'=> 400,
+                'message'=> "Deleted Unsucess"
+            ], 400);
+        }
+    }
+
+    public function dasbod()
+    {
+        //orderBy('id', 'desc')->take(5)->get();
+       $data = Transaksi::latest()->take(5)->get();
+       $count = Transaksi::count();
+    //    $type = Transaksi::details()->get()->unique('type');
+    //    $counttype = $type->count();
+       return response()->json([
+        'success'=> 200,
+        'countTransaksi'=> $count,
+        'type'=>0,
+        'listTransaction'=>$data
+
+    ], 201);
     }
 }

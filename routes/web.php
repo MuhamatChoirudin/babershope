@@ -54,30 +54,18 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     $router->put('transaksi/{id}', ['uses' => 'TransaksiController@update']);
 
-    $router->get('itemtransaksi',  ['uses' => 'ItemTransaksiController@showAllAuthors']);
+    $router->get('TransaksiDetail',  ['uses' => 'TransaksiDetailController@showAllAuthors']);
 
-    $router->get('itemtransaksi/{id}', ['uses' => 'ItemTransaksiController@showOneAuthor']);
+    $router->get('TransaksiDetail/{id}', ['uses' => 'TransaksiDetailController@showOneAuthor']);
 
-    $router->post('itemtransaksi', ['uses' => 'ItemTransaksiController@create']);
+    $router->post('TransaksiDetail', ['uses' => 'TransaksiDetailController@create']);
 
-    $router->delete('itemtransaksi/{id}', ['uses' => 'ItemTransaksiController@delete']);
+    $router->delete('TransaksiDetail/{id}', ['uses' => 'TransaksiDetailController@delete']);
 
-    $router->put('itemtransaksi/{id}', ['uses' => 'ItemTransaksiController@update']);
+    $router->put('itemtransaksi/{id}', ['uses' => 'TransaksiDetailController@update']);
 
     $router->post('register', 'AuthController@register');
 
     $router->post('login', 'AuthController@login');
-    
-    $router->get('cart',  ['uses' => 'CartController@showAllAuthors']);
-
-    $router->get('cart/{id}', ['uses' => 'CartController@showOneAuthor']);
-
-    $router->post('cart', ['uses' => 'CartController@create']);
-
-    $router->delete('cart/{id}', ['uses' => 'CartController@delete']);
-
-    $router->put('cart/{id}', ['uses' => 'CartController@update']);
-
-
-});
+ });
   

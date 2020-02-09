@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use  App\User;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -48,17 +49,16 @@ class AuthController extends Controller
             ]);
 
             return response()->json([
-                'success'=> true,
+                'success'=> 201,
                 'message'=> 'Register Success!',
-                'data'=>$user
+                'user'=>$user
             ], 201);
 
         }catch (\Exception $e) {
 
             return response()->json([
-                'success'=> false,
-                'message'=> 'Register Fail!',
-                'data'=>$e
+                'errorCode'=> 400,
+                'message'=> $e
             ], 400);
         }
 
@@ -75,29 +75,32 @@ class AuthController extends Controller
        $username = $request->input('username');
        $password = $request->input('password');
 
-       $user = User::where('username', $username)->first();
+        $user = User::where('username', $username)->first();
 
-       if(Hash::check($password, $user->password)){
+       if($user && Hash::check($password, $user->password)){
            $apiToken = base64_encode(Str::random(30));
-
+           Log::info('Showing user profile for user: '.$username);
            $user->update([
                'api_token'=> $apiToken
            ]);
 
            return response()->json([
-            'success'=> true,
+            'success'=> 201,
             'message'=> 'Login Success!',
-            'data'=> [
-                'user'=> $user,
-                'api_token'=> $apiToken
-                ]
+            'name'=> $user->name,
+            'username'=> $user->username, 
+            'email'=> $user->email,
+            'fk_role_code'=> $user->fk_role_code,
+            'status'=> $user->status, 
+            'created_at'=> $user->created_at,
+            'updated_at'=> $user->updated_at,
+            'apiToken'=> $apiToken
         ], 201);
        } else{
         return response()->json([
-            'success'=> false,
-            'message'=> 'Login Fail!',
-            'data'=> ''
-        ]);
+            'errorCode'=> 204,
+            'message'=> 'Your username or password is incorrect'
+             ]);
        }
     
     }

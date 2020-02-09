@@ -17,8 +17,8 @@ class TableTransaksiDetail extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('item_id');
             $table->foreign('item_id')->references('id')->on('item')->onDelete('cascade');
-            $table->unsignedBigInteger('transaction_id');
-            $table->foreign('transaction_id')->references('id')->on('transaksi')->onDelete('cascade');
+            $table->unsignedBigInteger('transaksi_id');
+            $table->foreign('transaksi_id')->references('id')->on('transaksi')->onDelete('cascade');
             $table->integer('qty');
             $table->timestamps();
         });

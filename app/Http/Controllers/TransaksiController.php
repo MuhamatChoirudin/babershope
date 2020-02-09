@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Cart;
-use App\Member;
 use App\Transaksi;
+use App\TransaksiDetail;
 
 class TransaksiController extends Controller
 {
@@ -26,30 +25,31 @@ class TransaksiController extends Controller
 
     //     return response()->json($author, 201);
     // }
-
-    public function create(Request $request, Cart $cart)
+    public function create(Request $request)
     {
-        $name = $request->input('name');
-        $address = $request->input('address');
-        $phone = $request->input('phone');
-        $status = $request->input('status');
-        $member = Member::create([
-            'name' => $name,
-            'address' => $address,
-            'phone' => $phone
-        ]);
 
-        // $transaksi = Transaksi::create
-
-        // $tansaksi = 
-        $member->transaksiss()->create([
-            'status' => $status,
-            'member_id' => $member->id,
-            'total_tax' => 0,
-            'total_discount' => 0,
-            'total_price' => 0,
+    }
+    // public function create(Request $request)
+    // {
+        // $request->json()->all();
+        // $name = $request->input('name');
+        // $address = $request->input('address');
+        // $phone = $request->input('phone');
+        // $status = $request->input('status');
+        // $item_id = $request->input('item_id');
+        // $member = Member::create([
+        //     'name' => $name,
+        //     'address' => $address,
+        //     'phone' => $phone
+        // ]); 
+        // $member->transaksiss()->create([
+        //     'status' => $status,
+        //     'member_id' => $member->id,
+        //     'total_tax' => 0,
+        //     'total_discount' => 0,
+        //     'total_price' => 0,
             
-        ]);
+        // ]);
     //    $transaksi ->member()->create([
     //         'name' => $name,
     //         'address' => $address,
@@ -57,21 +57,22 @@ class TransaksiController extends Controller
     //     ]);
 
         // $detail ->details()->create(
-        //  //   'item_id'=>$request->input('item_id');
+        //    // 'item_id' => $request->item_id,
+        //          'qty' => $request->qty,
 
         // );
 
-        $detail ->details() ->createMany(Cart::all()->map(function ($cart) { 
-            return [
-                'item_id' => $cart->item_id,
-                'qty' => $cart->qty,
-               // 'subtotal' => $cart->item->price * $cart->quantity
-            ];
-        })->toArray());
+        // $transaksidetail ->createMany(Cart::all()->map(function ($request) { 
+        //     return [
+        //         'item_id' => $request->item_id,
+        //         'qty' => $request->qty,
+        //        // 'subtotal' => $cart->item->price * $cart->quantity
+        //     ];
+        // })->toArray());
         // $author = Transaksi::create($request->all());
 
         // return response()->json($author, 201);
-    }
+  //  }
 
     public function update($id, Request $request)
     {

@@ -13,32 +13,98 @@ class ItemController extends Controller
     }
     public function showAllAuthors()
     {
-        return response()->json(Item::all());
+        return response()->json([
+            'success'=> 200,
+            'message'=> 'User Found!',
+            'List User'=>Item::all()
+        ]);
     }
 
-    public function showOneAuthor($item_id)
+    public function showOneAuthor($id)
     {
-        return response()->json(Item::find($item_id));
+        try{
+            $item = Item::find($id);
+            if(isset($item) and is_null($item)){
+                return response()->json([
+                'erorrCode'=> 204,
+                'message'=> 'Item Not Found!'
+            ],204);
+            }elseif($user){
+                return response()->json([
+                    'success'=> 200,
+                    'message'=> 'Item Found!',
+                    'user'=> $item
+                ], 200);
+            } else{
+                return response()->json([
+                    'erorrCode'=> 404,
+                    'message'=> 'Item Not Found!'
+                ], 404);
+            }
+            
+        }catch (\Exception $e) {
+            return response()->json([
+                'errorCode'=> 400,
+                'message'=> $e
+            ], 400);
+        }
     }
 
     public function create(Request $request)
     {
+    try{
         $item = Item::create($request->all());
 
-        return response()->json($item, 201);
+        return response()->json([
+            'success'=> 201,
+            'message'=> 'Register Success!',
+            'user'=>$item
+        ], 201);
+    }catch (\Exception $e) {
+
+        return response()->json([
+            'errorCode'=> 400,
+            'message'=> $e
+        ], 400);
+    }
     }
 
-    public function update($item_id, Request $request)
+    public function update($id, Request $request)
     {
-        $author = Item::findOrFail($item_id);
-        $author->update($request->all());
+        $item = Item::findOrFail($id);
+        $item->update($request->all());
 
-        return response()->json($author, 200);
+        $request->json()->all();
+        try{
+            $item = Item::findOrFail($id);
+            $item->update($request->all());
+            return response()->json([
+                'success'=> 200,
+                'message'=> 'Success Update User',
+                'List Item'=> $item
+            ], 200);
+        }catch (\Exception $e) {
+            return response()->json([
+                'errorCode'=> 400,
+                'message'=> "User Not Found!",
+                'errorr'=>$e
+            ], 400);
+        }
     }
 
-    public function delete($item_id)
+    public function delete($id)
     {
-        Item::findOrFail($item_id)->delete();
-        return response('Deleted Successfully', 200);
+        try{
+            Item::findOrFail($id)->delete();
+            return response()->json([
+                'success'=> 200,
+                'message'=> 'Deleted Successfully',
+            ], 200);
+        }catch (\Exception $e) {
+            return response()->json([
+                'errorCode'=> 400,
+                'message'=> "Deleted Unsucess"
+            ], 400);
+        }
     }
 }

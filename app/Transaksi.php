@@ -23,7 +23,7 @@ class Transaksi extends Model implements AuthenticatableContract, AuthorizableCo
     protected $table="transaksi";
     protected $primaryKey="id";
     protected $fillable = [
-        'member_id','total_tax', 'total_discount','total_price','status','created_at','updated_at','created_by','updated_by',
+        'name','total_tax', 'total_discount','total_price','status','created_at','updated_at','created_by','updated_by',
     ];
 
     /**
@@ -34,9 +34,6 @@ class Transaksi extends Model implements AuthenticatableContract, AuthorizableCo
     // protected $hidden = [
     //     'password',
     // ];
-    public function member() {
-    	return $this->belongsTo(Member::class);
-    }
     public function details() {
     	return $this->hasMany(Detail::class);
     }

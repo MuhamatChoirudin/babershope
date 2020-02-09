@@ -15,8 +15,7 @@ class TableTransaksi extends Migration
     {
         Schema::create('transaksi', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('member_id');
-            $table->foreign('member_id')->references('id')->on('member')->onDelete('cascade');
+            $table->string('name', 50);
             $table->decimal('total_tax',30);
             $table->decimal('total_discount',50);
             $table->decimal('total_price',20);
